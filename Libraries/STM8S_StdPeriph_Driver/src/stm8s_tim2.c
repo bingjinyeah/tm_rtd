@@ -151,6 +151,19 @@ void TIM2_ITConfig(TIM2_IT_TypeDef TIM2_IT, FunctionalState NewState)
   }
 }
 
+void TIM2_PrescalerConfig(TIM2_Prescaler_TypeDef Prescaler,
+                          TIM2_PSCReloadMode_TypeDef TIM2_PSCReloadMode)
+{
+  /* Check the parameters */
+  assert_param(IS_TIM2_PRESCALER_RELOAD_OK(TIM2_PSCReloadMode));
+  assert_param(IS_TIM2_PRESCALER_OK(Prescaler));
+  
+  /* Set the Prescaler value */
+  TIM2->PSCR = (uint8_t)Prescaler;
+  
+  /* Set or reset the UG Bit */
+  TIM2->EGR = (uint8_t)TIM2_PSCReloadMode;
+}
 /**
   * @brief  Selects the TIM2’s One Pulse Mode.
   * @param   TIM2_OPMode specifies the OPM Mode to be used.

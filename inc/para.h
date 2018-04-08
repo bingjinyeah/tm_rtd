@@ -10,7 +10,7 @@
 #define EEP_STOP       	    FLASH_DATA_START_PHYSICAL_ADDRESS+4
 #define EEP_ADDR            FLASH_DATA_START_PHYSICAL_ADDRESS+5
 
-#define FIRST_BLOOD_DATA    0x5a
+#define FIRST_BLOOD_DATA    0x55
 
 void para_task(void);
 void para_init(void);

@@ -3,6 +3,7 @@
 #include "rs485.h"
 #include "para.h"
 #include "rtd.h"
+#include "timer2.h"
 
 void clk_init(void)
 {
@@ -31,12 +32,13 @@ void main(void)
 	clk_init();
     adc_init();
     rs485_init();
-	wdt_enable();
+    timer2_init();
+	//wdt_enable();
 	
 	enableInterrupts();
     adc_start();
 	while (1){
-		IWDG_ReloadCounter();
+		//IWDG_ReloadCounter();
 		rtd_task();
         modbus_task();
         para_task();

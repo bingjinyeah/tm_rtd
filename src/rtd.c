@@ -37,7 +37,7 @@ const float temperature_resistance[] = {
 
 float get_temperature(float data)
 {
-    uint16_t length = sizeof(temperature_resistance);
+    uint16_t length = sizeof(temperature_resistance)/sizeof(float);
     uint16_t head;
     uint16_t term;
     float    tmp0,tmp1;

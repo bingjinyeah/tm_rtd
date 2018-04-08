@@ -8,6 +8,7 @@
 
 #define UART_RCV_SIZE		20
 
+
 uint16_t com_brate = 1;		//0:4.8...1:9.6...2:19.2...3:38.4...4:57.6...5:115.2
 uint8_t  com_parity = 0;	//0:no parity,1:even,2:odd
 uint8_t  com_stop = 1;
@@ -19,6 +20,17 @@ extern uint8_t rs485_send_buff[];
 uint8_t uart_rcv_buff[UART_RCV_SIZE];
 uint8_t uart_rcv_index = 0;
 uint8_t rcv_complete = 0;
+
+void delay_ms(uint16_t ms)
+{
+    uint16_t res = 500;
+    while(ms--){
+        while(res--){
+            
+        }
+        res = 500;
+    }
+}
 
 void uart_para_init()
 {
@@ -78,25 +90,36 @@ void uart_para_init()
 	
 	UART1_Init(bt,wl,st,pt,UART1_SYNCMODE_CLOCK_DISABLE,UART1_MODE_TXRX_ENABLE);
 }
-
 void para_init()
 {
     FLASH_Unlock(FLASH_MEMTYPE_DATA);
     while (FLASH_GetFlagStatus(FLASH_FLAG_DUL) == RESET){}
     if (FLASH_ReadByte(FIRST_BLOOD) != FIRST_BLOOD_DATA){
         
-        FLASH_ProgramByte(EEP_BRATE,com_brate);
-        FLASH_ProgramByte(EEP_PARITY,com_parity);
-        FLASH_ProgramByte(EEP_STOP,com_stop);
         FLASH_ProgramByte(EEP_ADDR,mb_local_address);
+        delay_ms(10);
+        FLASH_ProgramByte(EEP_BRATE,com_brate);
+        delay_ms(10);
+        FLASH_ProgramByte(EEP_PARITY,com_parity);
+        delay_ms(10);
+        FLASH_ProgramByte(EEP_STOP,com_stop);
+        delay_ms(10);
         FLASH_ProgramByte(FIRST_BLOOD,FIRST_BLOOD_DATA);
+        delay_ms(10);
+        MB_HoldReg[0] = mb_local_address;
+        MB_HoldReg[1] = com_brate;
+        MB_HoldReg[2] = com_parity;
+        MB_HoldReg[3] = com_stop;
         
     }else{
-        
-        com_brate = FLASH_ReadByte(EEP_BRATE);
-        com_parity = FLASH_ReadByte(EEP_PARITY);
-        com_stop = FLASH_ReadByte(EEP_STOP);
         mb_local_address = FLASH_ReadByte(EEP_ADDR);
+        delay_ms(10);
+        com_brate = FLASH_ReadByte(EEP_BRATE);
+        delay_ms(10);
+        com_parity = FLASH_ReadByte(EEP_PARITY);
+        delay_ms(10);
+        com_stop = FLASH_ReadByte(EEP_STOP);
+        delay_ms(10);
         MB_HoldReg[0] = mb_local_address;
         MB_HoldReg[1] = com_brate;
         MB_HoldReg[2] = com_parity;

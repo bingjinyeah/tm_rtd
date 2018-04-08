@@ -65,8 +65,8 @@ void modbus_pdu_process(uint8_t *pdata, uint8_t length)
 	{
 		mb_rcv_frame.Data[i] = pdata[index++];
 	}  
-	*((uint8_t*)&mb_rcv_frame.CRCResult+1) = pdata[index++];
 	*((uint8_t*)&mb_rcv_frame.CRCResult) = pdata[index++];
+	*((uint8_t*)&mb_rcv_frame.CRCResult+1) = pdata[index++];
 	crc_result = CRC16(pdata, buffer_length - 2);
 	index = 0;
 	if (crc_result != mb_rcv_frame.CRCResult){
@@ -112,5 +112,6 @@ void modbus_task()
         
         modbus_pdu_process(uart_rcv_buff,uart_rcv_index);
         rcv_complete = 0;
+        uart_rcv_index = 0;
     }
 }
